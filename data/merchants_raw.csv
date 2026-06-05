@@ -1,0 +1,201 @@
+merchant_id,merchant_name,category_id,city,is_amex_partner
+1,"Rodriguez, Figueroa and Sanchez Power Grid",6,Ahmedabad,0
+2,Doyle Ltd FX Global,8,Hyderabad,0
+3,"Mcclain, Miller and Henderson Movers & Shippers",5,Ahmedabad,0
+4,Davis and Sons Prep Coaching Classes,18,Pune,0
+5,"Guzman, Hoffman and Baldwin Prep Coaching Classes",18,Bangalore,0
+6,"Gardner, Robinson and Lawrence Forex Swap",8,Hyderabad,1
+7,Blake and Sons Tours Destinations,11,Delhi,0
+8,"Henderson, Ramirez and Lewis Attire Store",12,Delhi,0
+9,Garcia-James Power Utilities,24,Chennai,0
+10,Abbott-Munoz Diamonds Gold,9,Pune,0
+11,Blair PLC Office & Study Supplies,20,Mumbai,0
+12,Dudley Group Inns & Resorts,7,Chennai,0
+13,Arnold Ltd Inns & Resorts,7,Kolkata,0
+14,"Mcclure, Ward and Lee Furniture Co",1,Chennai,0
+15,Williams and Sons Telecom Corp,24,Delhi,0
+16,Galloway-Wyatt Cinema Hall,25,Ahmedabad,0
+17,James Group Flavors Restaurant,23,Chennai,0
+18,"Flowers, Martin and Kelly Exchanges",8,Kolkata,0
+19,"Adams, Zuniga and Wong Women Health Clinic",13,Ahmedabad,0
+20,"Reid, Ferguson and Sanchez Bazaar Grocery",21,Kolkata,0
+21,Gray-Mayo Diamonds Gold,9,Kolkata,0
+22,"Watts, Robinson and Nguyen Pediatrics clinic",16,Ahmedabad,0
+23,Perez Inc Fashions store,26,Ahmedabad,0
+24,Morales-Jones Inns & Resorts,7,Kolkata,0
+25,"Walter, Edwards and Rios Nursery Essentials",14,Mumbai,0
+26,Wilkerson-Day Forex Swap,8,Bangalore,1
+27,Baker and Sons Ornaments,9,Pune,0
+28,"Hoffman, Baker and Richards Cargo Express",5,Chennai,0
+29,"Ross, Robinson and Bright FX Global",8,Pune,0
+30,"Snyder, Campos and Callahan FX Global",8,Ahmedabad,0
+31,Burton Ltd Bazaar Grocery,21,Kolkata,0
+32,Carlson-Cruz Streamings Online,25,Ahmedabad,0
+33,"Ferrell, Rice and Maddox Bazaar Grocery",21,Ahmedabad,1
+34,Frazier Inc Power Grid,6,Kolkata,0
+35,"Dyer, Potter and Mack Movers & Shippers",5,Ahmedabad,0
+36,Rodriguez-Graham Tutors Hub,18,Mumbai,1
+37,Smith-Bowen Electronics,2,Delhi,0
+38,"Baker, Mason and White Kitchens",2,Mumbai,0
+39,Harrell LLC Movers & Shippers,5,Chennai,1
+40,"Romero, Gonzalez and Brooks Gourmet Bistro",23,Bangalore,0
+41,Ryan PLC Inns & Resorts,7,Ahmedabad,0
+42,George Group Electronics,2,Ahmedabad,0
+43,Rodriguez LLC Pediatrics clinic,16,Mumbai,0
+44,Allen-Allen Exam Academy,18,Pune,0
+45,"Arroyo, Miller and Tucker Comforts",1,Hyderabad,0
+46,Spence PLC Wedlock Arena,10,Mumbai,0
+47,Anderson Group Gourmet Bistro,23,Pune,0
+48,"Martin, Rose and Obrien Covered Corp",4,Delhi,0
+49,Hickman Ltd Movers & Shippers,5,Chennai,0
+50,"Harris, Collins and Carney Computers Center",20,Hyderabad,0
+51,"Brooks, Lam and Hayes Fine Jewelers",9,Pune,1
+52,Walker LLC Formal Tailors,12,Pune,0
+53,Chapman and Sons Lodgings PG,19,Chennai,1
+54,"Robinson, Jones and Welch FX Global",8,Hyderabad,0
+55,Jones Inc Homes Tech,3,Mumbai,0
+56,Jones-Young Cradles Hospital,13,Pune,0
+57,"Washington, Ryan and Cummings Exam Academy",18,Ahmedabad,0
+58,"Johnston, Sanchez and Kennedy Fresh Mart",21,Mumbai,0
+59,Lee-Davis Gas Supply,6,Delhi,1
+60,Gomez-Jenkins Nursery Essentials,14,Kolkata,0
+61,"Brown, Valdez and Lucas Surety Home",4,Mumbai,0
+62,Powell LLC Inns & Resorts,7,Ahmedabad,0
+63,Wright and Sons Electronics,2,Delhi,0
+64,"West, Henderson and Ramirez Fine Jewelers",9,Mumbai,0
+65,Baxter Inc Travel Horizons,11,Mumbai,0
+66,Morton-Chase Lodgings PG,19,Bangalore,0
+67,Williams PLC Cradles Hospital,13,Delhi,1
+68,Novak and Sons Broadband Net,6,Chennai,1
+69,Russell Group Cradles Hospital,13,Kolkata,1
+70,Hancock Inc Streamings Online,25,Bangalore,0
+71,Gray Group Telecom Corp,24,Delhi,0
+72,House-Glover Power Utilities,24,Kolkata,0
+73,Henderson-Bernard Surety Home,4,Pune,0
+74,"Stanley, Tucker and Lee Properties Portal",3,Kolkata,0
+75,Novak PLC Events Club,25,Pune,0
+76,"Daniels, Adkins and Brown Decors",1,Hyderabad,0
+77,"Woods, Calhoun and Schmidt Childcare Doctors",16,Chennai,1
+78,Yu Inc Prep Coaching Classes,18,Pune,0
+79,Jones Inc Power Grid,6,Pune,0
+80,"Hensley, Powell and David Cinema Hall",25,Hyderabad,0
+81,"Sanchez, Wheeler and Harvey Gourmet Bistro",23,Delhi,0
+82,Sandoval-Cunningham Ornaments,9,Bangalore,0
+83,Donovan-Harris Eats Diner,23,Bangalore,0
+84,"Edwards, Baker and Anderson Cradles Hospital",13,Kolkata,0
+85,"Evans, Stewart and Walton Surety Home",4,Delhi,0
+86,Smith PLC Events Lawn,10,Ahmedabad,0
+87,"Ferrell, Jones and Lewis Cinema Hall",25,Hyderabad,0
+88,Anderson-Bailey Movers & Shippers,5,Delhi,0
+89,Suarez LLC Nursery Essentials,14,Ahmedabad,0
+90,Moore-Bass Exam Academy,18,Pune,0
+91,"Turner, Riggs and Roman Decors",1,Delhi,0
+92,"Smith, Montoya and Evans Tutors Hub",18,Delhi,0
+93,"Garcia, Humphrey and Baker Computers Center",20,Kolkata,0
+94,Newton and Sons Decors,1,Hyderabad,0
+95,Campbell-Clark Women Health Clinic,13,Delhi,0
+96,Harris-Walters Tutors Hub,18,Chennai,0
+97,Wagner-King Business School,17,Bangalore,0
+98,Davis Group Maternity Care Centre,13,Bangalore,0
+99,Williams-Cook Ornaments,9,Hyderabad,0
+100,Walsh LLC Pediatrics clinic,16,Bangalore,0
+101,Figueroa PLC Gas Supply,6,Pune,0
+102,"Patterson, Smith and Jones Toddler Toys",14,Hyderabad,0
+103,"Mckee, Gardner and Davenport Fashions store",26,Delhi,0
+104,"Tran, Jordan and Williams Diamonds Gold",9,Chennai,0
+105,Nolan-Flynn Fresh Mart,21,Ahmedabad,1
+106,Nolan and Sons Computers Center,20,Chennai,0
+107,"Wright, Garcia and Deleon Shield Insurance",4,Bangalore,0
+108,Dickson-Brady Decors,1,Pune,0
+109,Hancock and Sons Computers Center,20,Pune,0
+110,Johnson-Doyle Apothecary Wellness,15,Kolkata,0
+111,Patton-Jenkins Bazaar Grocery,21,Bangalore,0
+112,"Shields, Cochran and Adams Tours Destinations",11,Chennai,0
+113,"Rodriguez, Brennan and Garrison Tours Destinations",11,Bangalore,0
+114,Gonzalez Group Escapes Packages,11,Hyderabad,0
+115,Torres-Pope Eats Diner,23,Ahmedabad,0
+116,Walker Ltd Fashions store,26,Chennai,0
+117,Ross LLC Cradles Hospital,13,Hyderabad,0
+118,Rasmussen LLC Attire Store,12,Delhi,0
+119,May-Ross Lodge & Stays,7,Bangalore,0
+120,"Rivera, Johnson and Wiley Streamings Online",25,Mumbai,0
+121,White-Estes Apothecary Wellness,15,Chennai,1
+122,Johnson-Carlson Attire Emporium,26,Hyderabad,0
+123,Chandler-Edwards Properties Portal,3,Pune,0
+124,"Joyce, Wilson and Lam Infant Clinic",16,Bangalore,0
+125,Scott Ltd Events Lawn,10,Chennai,0
+126,Smith-Frost Energy Refills,22,Bangalore,0
+127,"Mcdaniel, Bentley and Mclaughlin Baby Bazaar",14,Pune,0
+128,Diaz Inc Drugstore Plus,15,Ahmedabad,0
+129,"Mccall, Hanson and Alvarado Women Health Clinic",13,Pune,0
+130,Cortez LLC Electronics,2,Kolkata,0
+131,"Parker, Ortiz and Powell Trendy Outfits",26,Delhi,0
+132,Spencer-Lee Streamings Online,25,Chennai,0
+133,"Bentley, Byrd and Orr Fuel Point",22,Kolkata,0
+134,"Carroll, Sullivan and Bass Fresh Mart",21,Mumbai,0
+135,Mitchell-Jordan Bazaar Grocery,21,Pune,0
+136,"Lawson, Morris and Ramos Trendy Outfits",26,Pune,0
+137,"Lewis, Kennedy and Santana Decors",1,Delhi,0
+138,"Jackson, Miller and Robertson Exchanges",8,Chennai,0
+139,"Harvey, Davis and Crane Formal Tailors",12,Pune,0
+140,Chambers and Sons Events Club,25,Bangalore,0
+141,Hernandez Inc Furniture Co,1,Ahmedabad,0
+142,Riggs PLC Banquets Hall,10,Pune,0
+143,Gibson Ltd Shield Insurance,4,Bangalore,0
+144,"Lee, Horton and Snyder Events Lawn",10,Kolkata,0
+145,Hernandez Ltd Attire Emporium,26,Chennai,1
+146,Stafford Inc Childcare Doctors,16,Kolkata,0
+147,Robinson-Brock Covered Corp,4,Ahmedabad,0
+148,"Holmes, Williams and Wright Flavors Restaurant",23,Ahmedabad,0
+149,Bryant Group Homes Tech,3,Hyderabad,0
+150,"Schmidt, Hansen and Stewart Trendy Outfits",26,Delhi,0
+151,Salazar-Ball Escapes Packages,11,Delhi,0
+152,"Simmons, Meadows and Griffin Attire Emporium",26,Bangalore,0
+153,Manning Group FX Global,8,Bangalore,0
+154,Green-Wright Broadband Net,6,Kolkata,0
+155,"Ramirez, Strickland and Washington Baby Bazaar",14,Ahmedabad,1
+156,Hill Inc Attire Emporium,26,Pune,0
+157,"Mitchell, Nelson and Flores Broadband Net",6,Bangalore,0
+158,"Miller, Hernandez and Reyes Petrol Mart",22,Pune,0
+159,Mccarthy Inc Decors,1,Chennai,0
+160,Russell-Daniels Hostels Co,19,Pune,0
+161,Brown-Wall Furniture Co,1,Chennai,0
+162,Stein-Silva Diamonds Gold,9,Delhi,0
+163,"Smith, Gilmore and Johnston Shield Insurance",4,Bangalore,0
+164,Smith-Bell Tours Destinations,11,Chennai,1
+165,Castaneda-Ashley Covered Corp,4,Hyderabad,1
+166,Medina-Navarro Infant Clinic,16,Kolkata,0
+167,"Hurst, Freeman and Nelson Women Health Clinic",13,Pune,1
+168,Johnson-Rogers Shield Insurance,4,Kolkata,1
+169,"Yates, Ramsey and Pittman Drugstore Plus",15,Bangalore,0
+170,Hooper PLC Eats Diner,23,Hyderabad,0
+171,Meadows PLC Lodgings PG,19,Delhi,0
+172,"Alvarado, Miller and Patterson Movers & Shippers",5,Kolkata,1
+173,White-Green Forex Swap,8,Hyderabad,0
+174,Lewis-Murphy Broadband Net,6,Kolkata,1
+175,Ramirez-Bean Cargo Express,5,Pune,0
+176,King-Miller Gadgets Hub,20,Bangalore,0
+177,Curry Inc Maternity Care Centre,13,Pune,0
+178,Walker-Jones Infant Clinic,16,Bangalore,0
+179,"Williams, Johnson and Wright Gas Supply",6,Ahmedabad,1
+180,Howell and Sons Cargo Express,5,Bangalore,0
+181,Wells Inc Apothecary Wellness,15,Mumbai,0
+182,"Gould, Marshall and Scott Furniture Co",1,Ahmedabad,0
+183,Jackson-Lawson Lodge & Stays,7,Pune,1
+184,"Higgins, Strickland and Martin Technological Institute",17,Ahmedabad,0
+185,Rodriguez-Johnson Petrol Mart,22,Ahmedabad,0
+186,Johnston-Odonnell Flavors Restaurant,23,Ahmedabad,0
+187,Sanders-Espinoza Broadband Net,6,Delhi,0
+188,Vargas Ltd Decors,1,Chennai,0
+189,Garcia LLC Appliances Store,2,Hyderabad,0
+190,"Burke, Martinez and Riggs Exam Academy",18,Hyderabad,0
+191,Reed Group Streamings Online,25,Ahmedabad,0
+192,"Wood, Hunter and Peterson Telecom Corp",24,Ahmedabad,0
+193,Short-Garcia Business School,17,Delhi,0
+194,Reid-Poole Covered Corp,4,Hyderabad,0
+195,"Hernandez, Thompson and Boyd Attire Store",12,Mumbai,0
+196,"Nelson, Morton and Medina Apothecary Wellness",15,Chennai,0
+197,Marshall-Petersen Shield Insurance,4,Chennai,0
+198,"Adams, Christian and Rivas Kitchens",2,Ahmedabad,0
+199,Ramirez Group Formal Tailors,12,Delhi,0
+200,Christensen PLC Surety Home,4,Chennai,0

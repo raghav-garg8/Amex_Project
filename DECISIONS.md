@@ -87,3 +87,18 @@ This document details the core architectural decisions made for **LifeEventRadar
   - *180 Days:* Risk of capturing a one-off purchase from 5 months ago and misidentifying it as a near-term life change.
 * **Rationale for Decision:**
   90 days is the optimal balance for consumer credit behavior. Major life events (moving, weddings, higher education) typically exhibit a 60-to-90 day preparation window. A 90-day window captures the acceleration of spend during this preparation phase while remaining fresh enough to trigger marketing campaigns before the event concludes.
+
+---
+
+## 7. Native Local MySQL Database vs. Docker Containerization
+
+* **Decision:** Run database operations on a native local MySQL installation (e.g., via Homebrew or direct OS install) rather than Docker containers.
+* **Options Considered:**
+  1. *Containerized database:* Run MySQL via a Docker Compose recipe.
+  2. *Native local database:* Run MySQL as a local background daemon service on the host OS.
+* **Tradeoffs & Evaluation:**
+  - *Containerized:* Offers portability across environments, but requires a running Docker daemon, which might have local execution blocks, port clashes, or CPU overhead.
+  - *Native local:* Reduces runtime overhead and dependencies (no Docker required), making local CLI administration simpler, but requires manual environment configuration.
+* **Rationale for Decision:**
+  The user explicitly requested not to use Docker. Since a native local MySQL instance runs on the same port (`3306`) and uses the same credentials and connector protocols, it is fully compatible with all Python loaders, scoring, and analytics scripts.
+

@@ -1,0 +1,44 @@
+{
+    "execution_time": "2026-06-05 19:47:50",
+    "transactions": {
+        "initial_rows": 73291,
+        "clean_rows": 72627,
+        "anomalies_detected": {
+            "duplicates": 231,
+            "negative_spends": 208,
+            "future_dates": 225,
+            "invalid_categories": 10545,
+            "date_formats_corrected": 214
+        }
+    },
+    "offer_views": {
+        "initial_rows": 8483,
+        "clean_rows": 8483,
+        "anomalies_detected": {
+            "type_mismatches_resolved": 454,
+            "duplicates": 0
+        }
+    },
+    "other_tables": {
+        "customers_clean.csv": {
+            "initial_rows": 1000,
+            "clean_rows": 1000
+        },
+        "merchants_clean.csv": {
+            "initial_rows": 200,
+            "clean_rows": 200
+        },
+        "email_opens_clean.csv": {
+            "initial_rows": 921,
+            "clean_rows": 921
+        },
+        "reward_redemptions_clean.csv": {
+            "initial_rows": 2965,
+            "clean_rows": 2965
+        },
+        "campaign_clicks_clean.csv": {
+            "initial_rows": 1803,
+            "clean_rows": 1803
+        }
+    }
+}

@@ -1,0 +1,27 @@
+category_id,category_name,life_event_tag,signal_weight,signal_type,spend_threshold,description
+1,FURNITURE_STORES,home_purchase,30,spend_scaled,50000.0,Furniture purchases for home outfitting
+2,APPLIANCES,home_purchase,25,spend_scaled,30000.0,Kitchen and household appliances
+3,REAL_ESTATE_PORTALS,home_purchase,20,frequency,,House hunting web portals
+4,HOME_INSURANCE,home_purchase,15,binary,,Home insurance policy payment
+5,MOVING_COMPANIES,relocation,35,spend_scaled,20000.0,Moving and cargo logistics services
+6,NEW_CITY_UTILITIES,relocation,25,binary,,Utility deposits or setup in a new city
+7,HOTELS,relocation,20,frequency,,Hotel bookings and lodging
+8,FOREX,relocation,10,binary,,Foreign currency exchange and overseas spend
+9,JEWELRY_STORES,marriage,30,spend_scaled,40000.0,Engagement ring and fine jewelry spends
+10,WEDDING_VENUES,marriage,25,spend_scaled,50000.0,Venue and banquet bookings
+11,HONEYMOON_TRAVEL,marriage,25,spend_scaled,30000.0,Honeymoon flights and travel packages
+12,FORMAL_WEAR,marriage,10,binary,,"Suits, gowns, and wedding apparel"
+13,MATERNITY_HOSPITAL,new_child,35,binary,,Maternity care and delivery costs
+14,BABY_PRODUCTS,new_child,25,spend_scaled,15000.0,"Baby toys, clothing, and strollers"
+15,PHARMACY,new_child,20,binary,,Spike in medication and wellness purchases
+16,PEDIATRIC_CLINICS,new_child,10,binary,,Child immunization and clinic checkups
+17,UNIVERSITY_FEES,higher_education,35,binary,,Tuition and enrollment fees
+18,TEST_PREP,higher_education,25,spend_scaled,10000.0,Coaching classes and test prep books
+19,STUDENT_HOUSING,higher_education,20,binary,,Hostel and student lodging deposits
+20,STATIONERY_LAPTOPS,higher_education,10,binary,,Laptop and study supplies purchase
+21,GROCERIES,neutral,0,neutral,,Supermarkets and food stores
+22,GAS_STATIONS,neutral,0,neutral,,Fuel and service stations
+23,DINING,neutral,0,neutral,,Restaurants and bars
+24,UTILITIES,neutral,0,neutral,,"Electricity, gas, water billings"
+25,ENTERTAINMENT,neutral,0,neutral,,"Movie halls, events, streaming"
+26,CLOTHING,neutral,0,neutral,,Apparel and accessories store
