@@ -1,5 +1,5 @@
 # scoring/scoring_config.py
-"""Central Scoring and Target Configuration for LifeEventRadar.
+"""Central Scoring and Target Configuration for FinSight.
 
 Contains all mathematical weights, spend scaling thresholds, and minimum score
 boundaries to isolate calculations from hardcoded configurations.
@@ -71,11 +71,11 @@ EDUCATION_CONFIG: Dict[str, Any] = {
 
 # Card recommended product mapping based on top event
 RECOMMENDED_PRODUCTS: Dict[str, str] = {
-    "home_purchase": "AmEx Platinum Concierge Card & Home Loan Referral",
-    "relocation": "AmEx Explorer Travel Card & Lounge Access Package",
-    "marriage": "AmEx Gold Rewards Card & Luxury Partners Pack",
-    "new_child": "AmEx Cashback Essentials Card & Family Benefits Plan",
-    "higher_education": "AmEx Student Cashback Card & Education Loan Referral"
+    "home_purchase": "Elite tier Card & Home Loan Referral",
+    "relocation": "Explorer Travel Card & Lounge Access Package",
+    "marriage": "Premium Rewards Card & Luxury Partners Pack",
+    "new_child": "Cashback Essentials Card & Family Benefits Plan",
+    "higher_education": "Student Cashback Card & Education Loan Referral"
 }
 
 # Tie-breaking business priority order (highest to lowest CLV/relevance)
@@ -86,3 +86,63 @@ BUSINESS_PRIORITY: List[str] = [
     "relocation",
     "higher_education"
 ]
+
+# ============================================================
+# DB Connection Settings
+# ============================================================
+import os
+DB_CONFIG: Dict[str, Any] = {
+    "host": os.getenv("DB_HOST", "127.0.0.1"),
+    "port": int(os.getenv("DB_PORT", "3306")),
+    "user": os.getenv("DB_USER", "db_user"),
+    "password": os.getenv("DB_PASSWORD", "db_password"),
+    "database": os.getenv("DB_NAME", "finsight_db")
+}
+
+# ============================================================
+# RFM Segment Map
+# ============================================================
+RFM_SEGMENT_MAP: Dict[str, str] = {
+    'Champions':          'Best customers',
+    'Loyal':              'High frequency',
+    'Potential Loyalist': 'Recent, grow frequency',
+    'New Customer':       'Just joined',
+    'Promising':          'Above average',
+    'At Risk':            'Was good, fading',
+    'Cannot Lose':        'High value, gone',
+    'Hibernating':        'Low engagement',
+    'Lost':               'Churned'
+}
+
+# ============================================================
+# RFM Weight Map
+# Used by priority_index.py to convert segment names to weights
+# ============================================================
+RFM_WEIGHT_MAP = {
+    'Champions':          1.50,  # Best customers — highest multiplier
+    'Loyal':              1.35,  # High value, consistent
+    'Cannot Lose':        1.40,  # High past value, currently fading
+    'Potential Loyalist': 1.20,  # Growing relationship
+    'At Risk':            1.10,  # Worth recovering
+    'Promising':          1.05,  # Above average
+    'New Customer':       1.00,  # Neutral — insufficient history
+    'Hibernating':        0.85,  # Low engagement penalty
+    'Lost':               0.70,  # Lowest weight — unlikely to convert
+}
+
+# ============================================================
+# Velocity Weight Bounds
+# ============================================================
+VELOCITY_MAX_MULTIPLIER = 1.50
+VELOCITY_MIN_MULTIPLIER = 0.50
+
+# ============================================================
+# Priority Index Action Tiers
+# ============================================================
+PRIORITY_TIERS = {
+    'IMMEDIATE': (75, 100),   # Top priority — act within 24 hours
+    'HIGH':      (50, 75),    # High priority — act within 7 days
+    'MEDIUM':    (25, 50),    # Medium — include in next campaign
+    'LOW':       (0,  25),    # Low — monitor, no immediate action
+}
+

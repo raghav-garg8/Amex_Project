@@ -1,13 +1,13 @@
 {
-    "execution_time": "2026-06-05 19:47:50",
+    "execution_time": "2026-06-06 13:14:49",
     "transactions": {
         "initial_rows": 73291,
-        "clean_rows": 72627,
+        "clean_rows": 72424,
         "anomalies_detected": {
             "duplicates": 231,
             "negative_spends": 208,
-            "future_dates": 225,
-            "invalid_categories": 10545,
+            "future_dates": 428,
+            "invalid_categories": 10509,
             "date_formats_corrected": 214
         }
     },

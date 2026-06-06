@@ -1,6 +1,6 @@
 # docs/POWERBI_GUIDE.md — Power BI Visualization Guide
 
-This guide details the layout specifications, data connections, calculated fields, and DAX measures required to build the three audience-specific Power BI dashboards for **LifeEventRadar**.
+This guide details the layout specifications, data connections, calculated fields, and DAX measures required to build the three audience-specific Power BI dashboards for **FinSight**.
 
 ---
 
@@ -8,7 +8,7 @@ This guide details the layout specifications, data connections, calculated field
 
 * **Connector:** MySQL Database connector.
 * **Host:** `127.0.0.1` (or `localhost`)
-* **Database:** `life_event_radar_db`
+* **Database:** `finsight_db`
 * **Tables Imported:**
   - `customers` (Import Mode)
   - `customer_scores` (Import or DirectQuery Mode, depending on refresh frequency)

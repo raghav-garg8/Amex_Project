@@ -1,6 +1,6 @@
 # DECISIONS.md — Architectural Decisions & Tradeoffs
 
-This document details the core architectural decisions made for **LifeEventRadar**, the options considered, the tradeoffs evaluated, and the business or technical rationales for each choice.
+This document details the core architectural decisions made for **FinSight**, the options considered, the tradeoffs evaluated, and the business or technical rationales for each choice.
 
 ---
 
@@ -71,7 +71,7 @@ This document details the core architectural decisions made for **LifeEventRadar
   - *Inline:* Fewer files and slightly faster execution. However, it tightly couples signal weights with business policy rules.
   - *Standalone:* Decouples calculations from policy. If the business priority changes, only the arbitration engine is modified.
 * **Rationale for Decision:**
-  Separation of concerns. Raw scoring represents the *probability of customer intent*. Arbitration represents *business targeting policy* (which product AmEx prefers to push due to profitability, CLV, or portfolio balance). Treating these as separate software boundaries makes the codebase easier to test, maintain, and audit.
+  Separation of concerns. Raw scoring represents the *probability of customer intent*. Arbitration represents *business targeting policy* (which product  prefers to push due to profitability, CLV, or portfolio balance). Treating these as separate software boundaries makes the codebase easier to test, maintain, and audit.
 
 ---
 

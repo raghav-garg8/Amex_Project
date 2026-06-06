@@ -6,7 +6,7 @@
 
 ---
 
-## Database: `life_event_radar_db`
+## Database: `finsight_db`
 
 ### Table Index
 
@@ -37,8 +37,8 @@
 | age | TINYINT UNSIGNED | NOT NULL | Customer age in years. Range: 18–75. |
 | city | VARCHAR(50) | NOT NULL | Current city of residence. |
 | income_band | ENUM | NOT NULL | Income bracket: 'LOW', 'MEDIUM', 'HIGH', 'PREMIUM' |
-| card_type | VARCHAR(30) | NOT NULL | Current AmEx card: 'Green', 'Gold', 'Platinum', 'Blue' |
-| join_date | DATE | NOT NULL | Date customer joined AmEx. |
+| card_type | VARCHAR(30) | NOT NULL | Current card tier: 'Standard', 'Premium', 'Elite' |
+| join_date | DATE | NOT NULL | Date customer joined the platform. |
 | life_stage | VARCHAR(30) | NULL | Self-reported life stage: 'Student', 'Young Professional', 'Family', 'Senior'. Used for segmentation only — NOT used in scoring. |
 | opted_out | TINYINT(1) | NOT NULL DEFAULT 0 | 1 = opted out of behavioral scoring. Customers with opted_out=1 are excluded from all scoring pipelines. |
 | created_at | TIMESTAMP | NOT NULL DEFAULT CURRENT | Record creation timestamp. |
@@ -123,14 +123,14 @@ REAL_ESTATE_PORTALS    home_purchase     20             frequency     NULL
 | merchant_name | VARCHAR(100) | NOT NULL | Merchant display name (synthetic). |
 | category_id | SMALLINT UNSIGNED | NOT NULL FK | References merchant_categories.category_id |
 | city | VARCHAR(50) | NULL | Primary operating city. |
-| is_amex_partner | TINYINT(1) | NOT NULL DEFAULT 0 | 1 = AmEx merchant partnership. Used for offer targeting. |
+| is_partner | TINYINT(1) | NOT NULL DEFAULT 0 | 1 = merchant partnership. Used for offer targeting. |
 
 ---
 
 ## Table: `offer_views`
 
 **Purpose:** Records when a customer was shown an offer (impression event).
-Mirrors the offer_action variable in the AmEx Campus Challenge dataset.
+Mirrors the offer_action variable in the FinSight dataset.
 
 | Column | Type | Nullable | Description |
 |---|---|---|---|
@@ -145,7 +145,7 @@ Mirrors the offer_action variable in the AmEx Campus Challenge dataset.
 
 **Note:** `was_clicked = 1` means this offer view resulted in a click.
 This is equivalent to the binary outcome variable (offer_action) in the
-AmEx Campus Challenge 2025 problem statement.
+FinSight 2025 problem statement.
 
 ---
 
@@ -241,7 +241,7 @@ scoring engine reads directly — avoiding complex JOINs at score time.
 | engagement_multiplier | DECIMAL(4,3) | EWMA engagement score for top event category. |
 | channel_multiplier | DECIMAL(4,3) | Channel diversity multiplier (1.15–1.45). |
 | opportunity_score | DECIMAL(5,1) | Combined score: life_event × engagement × channel (capped at 100). |
-| recommended_product | VARCHAR(100) | AmEx product recommendation for top event. |
+| recommended_product | VARCHAR(100) | product recommendation for top event. |
 | conflict_flag | TINYINT(1) | 1 if multiple events scored above threshold (arbitration applied). |
 | arbitration_reason | VARCHAR(200) | Why arbitration chose top_event over alternatives. NULL if no conflict. |
 
@@ -279,3 +279,66 @@ and dashboard display. See `docs/ETHICS_AND_GOVERNANCE.md`.
 | opted_out_at | TIMESTAMP | When opt-out was recorded. |
 | opt_out_channel | VARCHAR(30) | How opt-out was requested: 'app', 'web', 'customer_service', 'email' |
 | reinstated_at | TIMESTAMP NULL | If customer later reinstated consent. NULL = still opted out. |
+
+---
+
+## Table: `customer_rfm`
+
+**Purpose:** Recency, Frequency, Monetary (RFM) customer value scores and segments. Populated by `scoring/rfm_engine.py`.
+
+| Column | Type | Description |
+|---|---|---|
+| rfm_id | BIGINT UNSIGNED PK | Unique RFM record ID. |
+| customer_id | INT UNSIGNED FK | References customers.customer_id |
+| score_date | DATE | Date the RFM scores were calculated. |
+| recency_days | INT UNSIGNED | Days since the customer's last completed transaction. |
+| frequency | INT UNSIGNED | Number of completed transactions in the history. |
+| monetary | DECIMAL(14,2) | Total spend amount of completed transactions. |
+| R_score | TINYINT UNSIGNED | Recency quintile score (1-5, where 5 is most recent). |
+| F_score | TINYINT UNSIGNED | Frequency quintile score (1-5, where 5 is highest count). |
+| M_score | TINYINT UNSIGNED | Monetary quintile score (1-5, where 5 is highest spend). |
+| rfm_score | CHAR(3) | Concatenated RFM code (e.g. '555' for Champions). |
+| rfm_combined | TINYINT UNSIGNED | Sum of R_score, F_score, and M_score (ranges from 3 to 15). |
+| segment | VARCHAR(30) | Assigned customer segment (e.g. 'Champions', 'Lost'). |
+
+---
+
+## Table: `customer_velocity`
+
+**Purpose:** Spend velocity anomaly scores comparing 30-day current spend with a 6-month baseline. Populated by `scoring/velocity_detector.py`.
+
+| Column | Type | Description |
+|---|---|---|
+| velocity_id | BIGINT UNSIGNED PK | Unique spend velocity record ID. |
+| customer_id | INT UNSIGNED FK | References customers.customer_id |
+| score_date | DATE | Date the velocity scores were calculated. |
+| current_spend | DECIMAL(14,2) | Spend amount in the current 30-day period. |
+| baseline_mean | DECIMAL(14,2) | Mean monthly spend over the 6-month baseline. |
+| baseline_std | DECIMAL(14,2) | Standard deviation of monthly spend over the baseline. |
+| velocity_score | DECIMAL(8,4) | Spend velocity Z-score: `(current - baseline_mean) / baseline_std`. |
+| velocity_label | VARCHAR(40) | Visual label (e.g. 'Strong Positive Anomaly', 'Declining'). |
+| velocity_weight | DECIMAL(5,3) | Priority index multiplier weight (clamped between 0.500 and 1.500). |
+| months_of_data | TINYINT UNSIGNED | Number of months of historical transaction data available. |
+
+---
+
+## Table: `customer_priority`
+
+**Purpose:** Fused Customer Priority Index, combining all three analytic engines. Populated by `fusion/priority_index.py`.
+
+| Column | Type | Description |
+|---|---|---|
+| priority_id | BIGINT UNSIGNED PK | Unique priority record ID. |
+| customer_id | INT UNSIGNED FK | References customers.customer_id |
+| score_date | DATE | Date the priority index was calculated. |
+| life_event_score | DECIMAL(5,1) | Combined life event opportunity score (0.0-100.0). |
+| rfm_segment | VARCHAR(30) | RFM segment assigned to the customer. |
+| rfm_weight | DECIMAL(5,3) | Multiplier weight based on RFM segment (0.700-1.500). |
+| velocity_weight | DECIMAL(5,3) | Multiplier weight based on spend velocity Z-score (0.500-1.500). |
+| engagement_multiplier | DECIMAL(5,3) | EWMA email/click recency engagement multiplier (0.500-2.000). |
+| channel_multiplier | DECIMAL(5,3) | Channel diversity multiplier (1.000-1.450). |
+| priority_index | DECIMAL(5,2) | Fused priority score (capped at 100.00). |
+| top_event | VARCHAR(30) | Win-arbitrated primary life event tag. |
+| recommended_product | VARCHAR(100) | Recommended card product referral target. |
+| action_tier | ENUM | Triage tier: 'IMMEDIATE', 'HIGH', 'MEDIUM', 'LOW'. |
+

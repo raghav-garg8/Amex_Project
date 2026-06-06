@@ -1,5 +1,5 @@
 # pipeline/generate_data.py
-"""Synthetic Data Generator for LifeEventRadar.
+"""Synthetic Data Generator for FinSight.
 
 Generates realistic transaction and engagement datasets, injecting typical
 data anomalies to validate the cleaning and ingestion layer.
@@ -21,7 +21,7 @@ random.seed(RANDOM_SEED)
 fake = Faker()
 fake.seed_instance(RANDOM_SEED)
 
-DATA_DIR = "/Users/raghavgarg/Desktop/AMEX_PROJECT/data"
+DATA_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data"))
 os.makedirs(DATA_DIR, exist_ok=True)
 
 # -------------------------------------------------------------------------
@@ -116,12 +116,12 @@ def generate_customers(num_customers: int = 1000) -> List[Dict[str, Any]]:
                 p=[0.3, 0.4, 0.2, 0.1]
             )
             
-            # Assign appropriate AmEx cards
+            # Assign appropriate cards
             card_map = {
-                "LOW": ["Blue", "Green"],
-                "MEDIUM": ["Green", "Gold"],
-                "HIGH": ["Gold", "Platinum"],
-                "PREMIUM": ["Platinum"]
+                "LOW": ["Standard"],
+                "MEDIUM": ["Standard", "Premium"],
+                "HIGH": ["Premium", "Elite"],
+                "PREMIUM": ["Elite"]
             }
             card_type = random.choice(card_map[income_band])
             
@@ -178,7 +178,7 @@ def generate_merchants(num_merchants: int = 200) -> List[Dict[str, Any]]:
 
     with open(path, mode="w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["merchant_id", "merchant_name", "category_id", "city", "is_amex_partner"])
+        writer.writerow(["merchant_id", "merchant_name", "category_id", "city", "is_partner"])
         
         for mid in range(1, num_merchants + 1):
             cat = random.choice(CATEGORIES)
@@ -225,7 +225,7 @@ def generate_merchants(num_merchants: int = 200) -> List[Dict[str, Any]]:
                 "category_id": cat["id"],
                 "category_name": cat["name"],
                 "city": city,
-                "is_amex_partner": is_partner
+                "is_partner": is_partner
             })
             
             writer.writerow([mid, name, cat["id"], city, is_partner])

@@ -1,6 +1,6 @@
 # Data Cleaning & Transformation Report
 
-**Execution Date:** 2026-06-05 19:47:50
+**Execution Date:** 2026-06-06 13:14:49
 **Date Filter Threshold:** 2026-06-05
 
 ## 1. Transaction Table Anomalies
@@ -9,8 +9,8 @@
 |---|---|
 | Duplicates | 231 |
 | Negative spends | 208 |
-| Future dates | 225 |
-| Invalid categories | 10545 |
+| Future dates | 428 |
+| Invalid categories | 10509 |
 | Date formats corrected | 214 |
 
 ## 2. Offer Views Anomalies
@@ -24,7 +24,7 @@
 
 | Dataset | Raw Row Count | Clean Row Count | Rows Excluded | Error Rate |
 |---|---|---|---|---|
-| transactions | 73291 | 72627 | 664 | 0.91% |
+| transactions | 73291 | 72424 | 867 | 1.18% |
 | offer_views | 8483 | 8483 | 0 | 0.00% |
 | customers | 1000 | 1000 | 0 | 0.00% |
 | merchants | 200 | 200 | 0 | 0.00% |

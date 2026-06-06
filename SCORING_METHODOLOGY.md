@@ -100,7 +100,7 @@ other signal. 65 requires at least one additional confirming signal.
 **Threshold justification (60):**
 Marriage signals can appear in sequence (jewelry → venue → travel)
 spread across months. 60 allows early detection when only the first
-1–2 signals are visible, enabling AmEx to engage the customer during
+1–2 signals are visible, enabling  to engage the customer during
 planning — not after the wedding.
 
 ---
@@ -200,6 +200,69 @@ recommendations simultaneously — a student card AND a luxury wedding
 card. This is operationally impossible and customer-experience damaging.
 The arbitration engine ensures one clean, justified recommendation per
 customer per scoring cycle.
+
+---
+
+## Three New Analytic Scoring Engines
+
+To provide holistic customer targeting, FinSight combines the base Life Event scoring with RFM Segment Analysis and Spend Velocity Anomaly Detection.
+
+### 1. RFM Scoring Engine (Customer Value Score)
+
+RFM is customer-relative and computed using equal-population quintiles (1 to 5):
+* **Recency (R):** Lower days since last purchase -> Higher R-score (recent = best).
+* **Frequency (F):** Higher transaction counts -> Higher F-score.
+* **Monetary (M):** Higher lifetime spend -> Higher M-score.
+
+#### Segment Mapping and Priority Weights
+R and F scores are mapped to 8 standard customer segments. Each segment has a designated weight multiplier used in the Priority Index:
+
+| Segment | RFM Criteria | Weight | Business Justification |
+|---|---|---|---|
+| **Champions** | R=5, F=5 | 1.50 | Best customers — highest conversion chance. |
+| **Cannot Lose** | R≤2, F≥4 | 1.40 | High value, but fading. Highly critical retention target. |
+| **Loyal** | F≥4 | 1.35 | High-value, consistent spenders. |
+| **Potential Loyalist** | R≥4, F≤3 (F>1) | 1.20 | Growing relationship with good frequency. |
+| **At Risk** | R≤3, F≥3 | 1.10 | Fading frequent customer, worth recovering. |
+| **Promising** | R=3, F≤3 | 1.05 | Above-average customers. |
+| **New Customer** | R≥4, F=1 | 1.00 | Neutral weight. Insufficient history. |
+| **Hibernating** | R≤2, F≤2 (not 1,1) | 0.85 | Low engagement penalty. |
+| **Lost** | R=1, F=1 | 0.70 | Churned. Penalized to avoid wasted marketing spend. |
+
+---
+
+### 2. Spend Velocity Anomaly Detector (Spend Spikes)
+
+Rather than checking absolute spend (which skews toward high earners), spend velocity checks each customer **against their own historical spending baseline**.
+
+#### Mathematical Formulation
+* **Current Month Spend ($x$):** Total completed spend in the current 30 days.
+* **Historical Baseline ($B$):** Monthly spends for the preceding 6 months.
+* **Z-Score ($Z$):**
+  $$Z = \frac{x - \mu_B}{\sigma_B}$$
+  Where $\mu_B$ is the baseline mean and $\sigma_B$ is the baseline standard deviation.
+* **Priority Weight Multiplier ($W_V$):**
+  $$W_V = \max(0.50, \min(1.50, 1.0 + 0.15 \times Z))$$
+
+Clamping to `[0.5, 1.5]` prevents extreme single-month spending anomalies from overriding all other signal channels.
+
+---
+
+### 3. Customer Priority Index (CPI) Fusion
+
+The Priority Index fuses all three dimensions (base intent, customer value, and spend velocity) into a single score:
+
+$$\text{Priority Index} = \text{Life Event Score} \times W_{RFM} \times W_{Velocity} \times \text{Engagement Mult} \times \text{Channel Mult}$$
+
+If no life event is currently triggered, the base index falls back to:
+$$\text{Priority Index} = (\text{RFM Combined Score} \times 3) \times W_{Velocity}$$
+
+#### Action Triage Tiers
+The final Priority Index (clamped to 100.0) classifies customers into actionable triage tiers:
+* **IMMEDIATE (Score 75–100):** Top priority. Trigger targeted offer within 24 hours.
+* **HIGH (Score 50–75):** High priority. Engage within 7 days.
+* **MEDIUM (Score 25–50):** Include in the next scheduled campaign batch.
+* **LOW (Score 0–25):** Monitor behavior, no immediate campaign action.
 
 ---
 

@@ -1,6 +1,6 @@
 # TASKS.md — Project Roadmap and Task Backlog
 
-This file serves as the master task tracking board for the **LifeEventRadar** project. It outlines development milestones, task priorities, and completion statuses.
+This file serves as the master task tracking board for the **FinSight** project. It outlines development milestones, task priorities, and completion statuses.
 
 ---
 
@@ -15,6 +15,7 @@ This file serves as the master task tracking board for the **LifeEventRadar** pr
 | **Milestone 4** | Engagement | EWMA engagement engine, channel diversity, fused opportunity score | **COMPLETED** |
 | **Milestone 5** | Feedback | A/B simulator, back-test precision validator, SQL feedback loops | **COMPLETED** |
 | **Milestone 6** | Dashboard | Power BI DAX measures, table specifications, and guides | **COMPLETED** |
+| **Milestone 7** | Upgrade | FinSight project upgrade, RFM, spend velocity, fusion index | **COMPLETED** |
 
 ---
 
@@ -115,3 +116,19 @@ This file serves as the master task tracking board for the **LifeEventRadar** pr
   - Write out all DAX queries for calculated columns (e.g., Conversion Rate, Spend Cohorts) and measures (e.g., Total Revenue Uplift, Active Flag Counts).
 * [x] **Task 6.2:** Finalize Dashboard Layout and Mockups
   - Specify page layouts, charts, and filter interactions for Executive, Customer Intelligence, and Product Recommendation dashboards.
+
+---
+
+### Milestone 7: FinSight Platform Upgrade (Completed)
+*Goal: Rebrand the entire repository, extend DDL schema, implement RFM/Spend Velocity/Priority Fusion scoring engines, and write SQL query packages.*
+
+* [x] **Task 7.1:** Overwrite `README.md` with new FinSight template.
+* [x] **Task 7.2:** Append new tables (`customer_rfm`, `customer_velocity`, `customer_priority`) to `database/schema.sql`.
+* [x] **Task 7.3:** Update `scoring/scoring_config.py` with DB settings and RFM/Velocity thresholds.
+* [x] **Task 7.4:** Globally rebrand brand name references (LifeEventRadar/Amex to FinSight) in all 20+ scripts and markdown documentations.
+* [x] **Task 7.5:** Implement `scoring/rfm_engine.py` using Pandas quintiles.
+* [x] **Task 7.6:** Implement customer-relative Z-score `scoring/velocity_detector.py`.
+* [x] **Task 7.7:** Implement the fusion formula logic in `fusion/priority_index.py`.
+* [x] **Task 7.8:** Create SQL queries `rfm_scoring.sql` and `velocity_anomaly.sql` in `database/queries/`.
+* [x] **Task 7.9:** Create test suites `tests/test_rfm.py` and `tests/test_velocity.py`.
+* [x] **Task 7.10:** Run all automated tests and confirm successful integration runs.

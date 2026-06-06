@@ -1,5 +1,5 @@
 # pipeline/aggregate_features.py
-"""Feature Aggregation Pipeline for LifeEventRadar.
+"""Feature Aggregation Pipeline for FinSight.
 
 Reads the pre-designed analytical SQL query signal_detection.sql and runs it
 on the local MySQL database to populate the customer_features table.
@@ -9,14 +9,20 @@ import os
 import sys
 import mysql.connector
 
-# Central connection configurations (consistent with load_to_db.py)
-DB_HOST = os.getenv("DB_HOST", "127.0.0.1")
-DB_PORT = int(os.getenv("DB_PORT", "3306"))
-DB_USER = os.getenv("DB_USER", "amex_user")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "amex_password")
-DB_NAME = os.getenv("DB_NAME", "life_event_radar_db")
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../scoring")))
+from scoring_config import DB_CONFIG
 
-QUERY_PATH = "/Users/raghavgarg/Desktop/AMEX_PROJECT/database/queries/signal_detection.sql"
+# Read connection configurations from DB_CONFIG
+DB_HOST = DB_CONFIG["host"]
+DB_PORT = DB_CONFIG["port"]
+DB_USER = DB_CONFIG["user"]
+DB_PASSWORD = DB_CONFIG["password"]
+DB_NAME = DB_CONFIG["database"]
+
+QUERY_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../database/queries/signal_detection.sql"))
 
 def get_connection() -> mysql.connector.MySQLConnection:
     """Establishes connection to the target MySQL database."""
@@ -26,7 +32,7 @@ def get_connection() -> mysql.connector.MySQLConnection:
         "user": DB_USER,
         "password": DB_PASSWORD,
         "database": DB_NAME,
-        "raise_on_warnings": True
+        "raise_on_warnings": False
     }
     return mysql.connector.connect(**config)
 

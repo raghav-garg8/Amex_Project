@@ -1,6 +1,6 @@
 # AGENTS.md — Agent Operating Instructions & Coding Standards
 
-This file contains operational instructions, coding standards, and repository conventions for future AI agents working on the **LifeEventRadar** codebase. Follow these rules strictly to ensure code quality, maintainability, and architectural consistency.
+This file contains operational instructions, coding standards, and repository conventions for future AI agents working on the **FinSight** codebase. Follow these rules strictly to ensure code quality, maintainability, and architectural consistency.
 
 ---
 

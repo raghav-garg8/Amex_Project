@@ -2,7 +2,7 @@
 
 ## 1. High-Level Architecture
 
-The **LifeEventRadar** platform is designed as an end-to-end, batch-oriented data and analytics pipeline. The architecture is structured in logical layers to separate the responsibilities of data simulation, cleaning, aggregations, behavioral scoring, engagement calculation, and visual intelligence.
+The **FinSight** platform is designed as an end-to-end, batch-oriented data and analytics pipeline. The architecture is structured in logical layers to separate the responsibilities of data simulation, cleaning, aggregations, behavioral scoring, engagement calculation, and visual intelligence.
 
 ```
        [ Raw Logs / CSV Data Sources ]
@@ -38,6 +38,28 @@ The **LifeEventRadar** platform is designed as an end-to-end, batch-oriented dat
          │      Dashboards       │
          └───────────────────────┘
 ```
+
+---
+
+## Three Intelligence Engines
+
+FinSight combines three independent analytical engines whose
+outputs are fused into a single Customer Priority Index.
+Each engine answers a different question:
+
+| Engine | Question Answered | Output |
+|---|---|---|
+| RFM Engine | How valuable is this customer RIGHT NOW? | Segment (1 of 8) + combined score |
+| Life Event Engine | What is this customer about to do? | Event score (0–100) + recommendation |
+| Velocity Engine | Is this customer's behavior shifting? | Z-score + weight multiplier |
+
+**Why three engines instead of one:**
+A customer can be valuable (Champions) without approaching a
+life event. A customer can be approaching a life event without
+being currently valuable (Lost). A customer's spend can spike
+without any clear categorical signal. Each engine catches what
+the others miss. The Priority Index requires convergent evidence
+across all three engines to surface a customer as an immediate action priority.
 
 ---
 
@@ -108,11 +130,11 @@ To prevent tight coupling, the platform maintains clear service and data boundar
 
 ## 5. External Integrations
 
-LifeEventRadar is designed to integrate with the following external systems:
+FinSight is designed to integrate with the following external systems:
 
 * **MySQL Database:** Serves as the primary data store, analytics computation hub, and query interface. Python scripts use `mysql-connector-python` or `SQLAlchemy` for connection pooling.
 * **Power BI Desktop / Service:** Connects to the MySQL server using native database connectors to feed interactive dashboards.
-* **Mock Campaign Execution (Simulated):** In a production AmEx environment, `customer_scores` would be exported to an enterprise campaign manager (like Salesforce Marketing Cloud or Adobe Campaign). The database schema provides clean tables designed to integrate with such downstream targets.
+* **Mock Campaign Execution (Simulated):** In a production production environment, `customer_scores` would be exported to an enterprise campaign manager (like Salesforce Marketing Cloud or Adobe Campaign). The database schema provides clean tables designed to integrate with such downstream targets.
 
 ---
 

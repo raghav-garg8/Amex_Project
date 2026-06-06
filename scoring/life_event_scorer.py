@@ -1,5 +1,5 @@
 # scoring/life_event_scorer.py
-"""Scoring Engine Rules for LifeEventRadar.
+"""Scoring Engine Rules for FinSight.
 
 Calculates the base transaction signal score (0 to 100) for all 5 life events
 using pre-aggregated customer features and configurable weights.

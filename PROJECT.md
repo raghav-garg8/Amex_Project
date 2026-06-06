@@ -1,13 +1,13 @@
-# PROJECT.md — LifeEventRadar 🎯
+# PROJECT.md — FinSight 🎯
 
 ## Project Vision & Mission
 
-**LifeEventRadar** is a behavioral signal detection and offer intelligence platform built to mirror the analytical thinking of American Express's Risk Product & Data Strategy teams. 
+**FinSight** is a behavioral signal detection and offer intelligence platform built to mirror the analytical thinking of financial services industry-standard Risk Product & Data Strategy teams. 
 
 The platform’s mission is to answer a critical business question:
-> **"What card product or offer should AmEx show this customer — 90 days before their life changes?"**
+> **"What card product or offer should the platform show this customer — 90 days before their life changes?"**
 
-By capturing leading transaction indicators (e.g., buying furniture, paying university fees) and combining them with multi-channel digital engagement logs, LifeEventRadar identifies customers on the verge of major life events. It scores their behavioral intent, arbitrates between competing events, and outputs personalized, high-conviction product recommendations. This proactive approach unlocks an estimated **₹6.4 Crore** in annual spend opportunity.
+By capturing leading transaction indicators (e.g., buying furniture, paying university fees) and combining them with multi-channel digital engagement logs, FinSight identifies customers on the verge of major life events. It scores their behavioral intent, arbitrates between competing events, and outputs personalized, high-conviction product recommendations. This proactive approach unlocks an estimated **₹6.4 Crore** in annual spend opportunity.
 
 ---
 
@@ -15,10 +15,10 @@ By capturing leading transaction indicators (e.g., buying furniture, paying univ
 
 Traditional marketing models target customers based on historical spend or static demographic profiles. This results in lagging or irrelevant offers. For example, offering a travel card *after* a customer has already relocated, or a student card *after* they have graduated.
 
-**LifeEventRadar solves this by:**
+**FinSight solves this by:**
 1. **Detecting Leading Indicators:** Focusing on transactional signals that occur *before* a life event (e.g., test prep spending 6 months before university admission, or furniture purchases before a home move).
 2. **Merging Intent with Engagement:** Scoring not just transaction spend, but also whether the customer is actively engaging with related digital communications (emails, app clicks).
-3. **Providing Actionable Product Pushes:** Generating a single, high-conviction product recommendation (such as the AmEx Platinum Card for a Home Purchase, or the AmEx Travel Card for relocation) rather than bombarding them with multiple generic offers.
+3. **Providing Actionable Product Pushes:** Generating a single, high-conviction product recommendation (such as the Elite tier Card for a Home Purchase, or the Explorer Travel Card for relocation) rather than bombarding them with multiple generic offers.
 
 ---
 
@@ -42,7 +42,7 @@ The platform serves three primary stakeholder groups, each accessing the data vi
 
 ## Core Features
 
-LifeEventRadar is built as an end-to-end analytics pipeline consisting of six distinct layers:
+FinSight is built as an end-to-end analytics pipeline consisting of six distinct layers:
 
 1. **Data Ingestion & Anomaly Handling:** Cleans, standardizes, and validates messy raw transaction and engagement logs. It handles duplicates, future-dated events, negative spend, and type mismatches.
 2. **SQL Analytics Engine:** Computes rolling 90-day aggregations, cohort segmentation (Low/Medium/High spenders), and category frequency metrics using window functions and CTEs.
@@ -88,18 +88,18 @@ sequenceDiagram
 ```
 
 ### Detailed Customer Lifecycle
-1. **Signal Generation:** A customer starts house hunting, visiting real estate portals and browsing appliance stores. They charge these to their AmEx card.
+1. **Signal Generation:** A customer starts house hunting, visiting real estate portals and browsing appliance stores. They charge these to their card.
 2. **Feature Aggregation:** Overnight, the database aggregates their 90-day spend in these categories and flags a rolling increase.
 3. **Scoring & Arbitration:** The Python scoring engine calculates a Home Purchase score of 72. It also notes a Relocation score of 60. The arbitration engine applies priority rules and selects Home Purchase as the primary event.
 4. **Engagement Fusion:** The engine checks email click-through logs. The customer clicked a "Home & Style" newsletter link 3 days ago (EWMA score 1.8) across two channels (email and app). This multiplies the base score, yielding a high-conviction opportunity score.
-5. **Targeted Campaign:** The customer is added to the campaign list for the AmEx Platinum Card with a concierge moving offer.
+5. **Targeted Campaign:** The customer is added to the campaign list for the Elite tier Card with a premium moving offer.
 6. **Conversion Tracking:** Within 45 days, the customer accepts the offer. The feedback loop records a True Positive, updating the model's precision metric.
 
 ---
 
 ## Future Roadmap
 
-The long-term roadmap for LifeEventRadar includes:
+The long-term roadmap for FinSight includes:
 
 * **Real-time Event Ingestion:** Transitioning Layer 1 from batch SQL files to streaming event topics (e.g., Apache Kafka) to detect and score signals within hours of transaction authorization.
 * **Opt-Out Preference Portal:** Building a mock customer portal that interfaces with the `opt_out_registry` to simulate customer-driven data privacy controls.

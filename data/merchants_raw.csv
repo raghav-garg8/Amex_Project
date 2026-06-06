@@ -1,4 +1,4 @@
-merchant_id,merchant_name,category_id,city,is_amex_partner
+merchant_id,merchant_name,category_id,city,is_partner
 1,"Rodriguez, Figueroa and Sanchez Power Grid",6,Ahmedabad,0
 2,Doyle Ltd FX Global,8,Hyderabad,0
 3,"Mcclain, Miller and Henderson Movers & Shippers",5,Ahmedabad,0

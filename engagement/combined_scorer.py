@@ -1,5 +1,5 @@
 # engagement/combined_scorer.py
-"""Combined Scorer & Fusion Pipeline Coordinator for LifeEventRadar.
+"""Combined Scorer & Fusion Pipeline Coordinator for FinSight.
 
 Orchestrates the transactional scoring rules, arbitration, engagement EWMA,
 and channel diversity logic, executing the full pipeline and writing outputs to MySQL.
@@ -8,8 +8,12 @@ and channel diversity logic, executing the full pipeline and writing outputs to 
 import os
 import sys
 from datetime import datetime
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Tuple, List
 import mysql.connector
+
+# Resolve cross-module imports
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../scoring")))
 
 # Scoring imports
 from scoring.life_event_scorer import (
@@ -21,19 +25,34 @@ from scoring.life_event_scorer import (
 )
 from scoring.arbitration_engine import resolve_priority
 from engagement.ewma_engine import calculate_ewma_scores
+from scoring_config import DB_CONFIG
 
-# Connection parameters
-DB_HOST = os.getenv("DB_HOST", "127.0.0.1")
-DB_PORT = int(os.getenv("DB_PORT", "3306"))
-DB_USER = os.getenv("DB_USER", "amex_user")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "amex_password")
-DB_NAME = os.getenv("DB_NAME", "life_event_radar_db")
+# Read connection configurations from DB_CONFIG
+DB_HOST = DB_CONFIG["host"]
+DB_PORT = DB_CONFIG["port"]
+DB_USER = DB_CONFIG["user"]
+DB_PASSWORD = DB_CONFIG["password"]
+DB_NAME = DB_CONFIG["database"]
 
 # Fixed Execution Date
 CURDATE_STR = "2026-06-05"
 
+# Map from life event tag to campaign categories
+CAMPAIGN_CATEGORY_MAP: Dict[str, str] = {
+    "home_purchase": "home",
+    "relocation": "travel",
+    "marriage": "lifestyle",
+    "new_child": "rewards",
+    "higher_education": "education"
+}
+
+
 def get_connection() -> mysql.connector.MySQLConnection:
-    """Connects to the MySQL database."""
+    """Connects to the MySQL database.
+
+    Returns:
+        MySQL connection object.
+    """
     return mysql.connector.connect(
         host=DB_HOST,
         port=DB_PORT,
@@ -41,6 +60,7 @@ def get_connection() -> mysql.connector.MySQLConnection:
         password=DB_PASSWORD,
         database=DB_NAME
     )
+
 
 def fetch_features(conn: mysql.connector.MySQLConnection) -> List[Dict[str, Any]]:
     """Retrieves all aggregated customer feature records.
@@ -56,6 +76,7 @@ def fetch_features(conn: mysql.connector.MySQLConnection) -> List[Dict[str, Any]
     rows = cursor.fetchall()
     cursor.close()
     return rows
+
 
 def fetch_transaction_recency(conn: mysql.connector.MySQLConnection) -> Dict[int, Dict[str, str]]:
     """Queries the date of the latest transaction for each customer and event tag.
@@ -86,11 +107,11 @@ def fetch_transaction_recency(conn: mysql.connector.MySQLConnection) -> Dict[int
 
     recency_map: Dict[int, Dict[str, str]] = {}
     for cid, tag, date_val in rows:
-        # Format date object to string YYYY-MM-DD
         date_str = date_val.strftime("%Y-%m-%d") if hasattr(date_val, "strftime") else str(date_val)
         recency_map.setdefault(cid, {})[tag] = date_str
         
     return recency_map
+
 
 def fetch_channel_diversity(conn: mysql.connector.MySQLConnection) -> Dict[int, int]:
     """Queries the number of distinct channels used in the last 30 days.
@@ -118,45 +139,40 @@ def fetch_channel_diversity(conn: mysql.connector.MySQLConnection) -> Dict[int, 
     cursor.close()
     return {cid: count for cid, count in rows}
 
-def run_pipeline() -> None:
-    """Executes the scoring pipeline for all customers and saves outcomes."""
-    print("Initializing scoring & engagement fusion pipeline...")
-    try:
-        conn = get_connection()
-    except mysql.connector.Error as err:
-        print(f"Connection failed: {err}")
-        sys.exit(1)
 
-    # 1. Fetch features and engagement stats
-    print("Loading pre-aggregated customer features...")
-    customer_features = fetch_features(conn)
-    print("Loading transaction recency logs...")
-    recency_data = fetch_transaction_recency(conn)
-    print("Loading digital engagement multipliers...")
-    ewma_multipliers = calculate_ewma_scores(conn)
-    print("Loading channel diversity counts...")
-    channel_diversity = fetch_channel_diversity(conn)
+def _reset_customer_scores(conn: mysql.connector.MySQLConnection) -> None:
+    """Deletes existing scores for the current execution date.
 
-    # 2. Reset score tables
+    Args:
+        conn: MySQL connection.
+    """
     cursor = conn.cursor()
     cursor.execute(f"DELETE FROM customer_scores WHERE score_date = '{CURDATE_STR}';")
     conn.commit()
+    cursor.close()
 
+
+def _calculate_opportunity_score_records(
+    customer_features: List[Dict[str, Any]],
+    recency_data: Dict[int, Dict[str, str]],
+    ewma_multipliers: Dict[int, Dict[str, float]],
+    channel_diversity: Dict[int, int]
+) -> List[Tuple]:
+    """Computes base scoring and fusions to build opportunity score insert tuples.
+
+    Args:
+        customer_features: List of customer features from DB.
+        recency_data: Transaction recency maps.
+        ewma_multipliers: EWMA recency-biased categories multipliers.
+        channel_diversity: Number of distinct active channels per customer.
+
+    Returns:
+        List of database row insert tuples.
+    """
     score_records = []
-    # Map from life event tag to campaign categories
-    campaign_category_map = {
-        "home_purchase": "home",
-        "relocation": "travel",
-        "marriage": "lifestyle",
-        "new_child": "rewards",
-        "higher_education": "education"
-    }
-
-    # 3. Process each customer
     for feat in customer_features:
         cid = feat["customer_id"]
         
-        # Calculate base scores
         scores = {
             "home_purchase": compute_home_score(feat),
             "relocation": compute_relocation_score(feat),
@@ -165,47 +181,41 @@ def run_pipeline() -> None:
             "higher_education": compute_edu_score(feat)
         }
         
-        # Resolve priority conflicts
         cust_recency = recency_data.get(cid, {})
         top_event, rec_product, conflict_flag, reason = resolve_priority(scores, cust_recency)
         
-        # Initalize multipliers
         engagement_mult = 1.000
         channel_mult = 1.000
         opportunity_score = 0.0
         
         if top_event:
-            # Fetch matching campaign category multiplier
-            campaign_cat = campaign_category_map[top_event]
+            campaign_cat = CAMPAIGN_CATEGORY_MAP[top_event]
             engagement_mult = ewma_multipliers.get(cid, {}).get(campaign_cat, 0.5)
             
-            # Fetch channel diversity multiplier
             channels = channel_diversity.get(cid, 0)
             channel_mult = 1.0 + (min(channels, 3) * 0.15)
             
-            # Fused Opportunity Score
             base_score = scores[top_event]
             opportunity_score = min(base_score * engagement_mult * channel_mult, 100.0)
             
         score_records.append((
-            cid,
-            CURDATE_STR,
-            scores["home_purchase"],
-            scores["relocation"],
-            scores["marriage"],
-            scores["new_child"],
-            scores["higher_education"],
-            top_event,
-            round(engagement_mult, 3),
-            round(channel_mult, 3),
-            round(opportunity_score, 1),
-            rec_product,
-            conflict_flag,
-            reason
+            cid, CURDATE_STR,
+            scores["home_purchase"], scores["relocation"], scores["marriage"],
+            scores["new_child"], scores["higher_education"],
+            top_event, round(engagement_mult, 3), round(channel_mult, 3),
+            round(opportunity_score, 1), rec_product, conflict_flag, reason
         ))
+    return score_records
 
-    # 4. Ingest scores in batch
-    print(f"Ingesting final scores into customer_scores...")
+
+def _write_scores_to_db(score_records: List[Tuple], conn: mysql.connector.MySQLConnection) -> None:
+    """Inserts computed scores into the database in batches.
+
+    Args:
+        score_records: List of tuples to insert.
+        conn: MySQL connection object.
+    """
+    cursor = conn.cursor()
     insert_query = """
         INSERT INTO customer_scores (
             customer_id, score_date, home_score, relocation_score, marriage_score, child_score, edu_score,
@@ -215,17 +225,49 @@ def run_pipeline() -> None:
         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
     """
     
-    # Batch load
     batch_size = 1000
     for i in range(0, len(score_records), batch_size):
         batch = score_records[i:i+batch_size]
         cursor.executemany(insert_query, batch)
         
     conn.commit()
-    print(f"Scoring pipeline complete. Successfully scored {len(score_records)} customers.")
-    
     cursor.close()
-    conn.close()
+    print(f"Scoring pipeline complete. Successfully scored {len(score_records)} customers.")
+
+
+def run_pipeline() -> None:
+    """Executes the scoring pipeline for all customers and saves outcomes."""
+    print("Initializing scoring & engagement fusion pipeline...")
+    try:
+        conn = get_connection()
+    except mysql.connector.Error as err:
+        print(f"Connection failed: {err}")
+        sys.exit(1)
+
+    try:
+        print("Loading pre-aggregated customer features...")
+        customer_features = fetch_features(conn)
+        print("Loading transaction recency logs...")
+        recency_data = fetch_transaction_recency(conn)
+        print("Loading digital engagement multipliers...")
+        ewma_multipliers = calculate_ewma_scores(conn)
+        print("Loading channel diversity counts...")
+        channel_diversity = fetch_channel_diversity(conn)
+
+        print("Resetting current score partition...")
+        _reset_customer_scores(conn)
+
+        print("Calculating opportunity scores...")
+        score_records = _calculate_opportunity_score_records(
+            customer_features, recency_data, ewma_multipliers, channel_diversity
+        )
+
+        print("Ingesting final scores into customer_scores...")
+        _write_scores_to_db(score_records, conn)
+
+    finally:
+        conn.close()
+
 
 if __name__ == "__main__":
     run_pipeline()
